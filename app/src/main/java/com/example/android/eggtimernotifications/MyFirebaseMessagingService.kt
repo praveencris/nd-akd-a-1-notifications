@@ -1,6 +1,9 @@
 package com.example.android.eggtimernotifications
 
+import android.app.NotificationManager
 import android.util.Log
+import androidx.core.content.ContextCompat
+import com.example.android.eggtimernotifications.util.sendNotification
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -17,8 +20,20 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // DONE: Step 3.5 check messages for data
         // Check if message contains a data payload.
         remoteMessage?.data?.let {
-         Log.d(TAG,"Message data payload: "+remoteMessage.data)
+            Log.d(TAG, "Message data payload: " + remoteMessage.data)
         }
+
+        remoteMessage?.notification?.let {
+            sendNotification(it.body)
+        }
+    }
+
+    private fun sendNotification(message: String?) {
+        val notificationManager = ContextCompat.getSystemService(
+            this,
+            NotificationManager::class.java
+        ) as NotificationManager
+        notificationManager.sendNotification(message!!, this)
     }
 
     // DONE: Step 3.2 log registration token
