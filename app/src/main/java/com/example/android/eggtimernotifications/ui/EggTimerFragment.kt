@@ -24,15 +24,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.eggtimernotifications.R
 import com.example.android.eggtimernotifications.databinding.FragmentEggTimerBinding
+import com.google.firebase.messaging.FirebaseMessaging
 
 class EggTimerFragment : Fragment() {
 
-    private val TOPIC = "breakfast"
+    private  val  TOPIC = "breakfast"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,6 +61,8 @@ class EggTimerFragment : Fragment() {
             getString(R.string.breakfast_notification_channel_name)
         )
 
+        // DONE: Step 3.4 call subscribe topics on start
+        subscribeTopic()
         return binding.root
     }
 
@@ -93,5 +97,20 @@ class EggTimerFragment : Fragment() {
     companion object {
         fun newInstance() = EggTimerFragment()
     }
+
+    // DONE: Step 3.3 subscribe to breakfast topic
+    private fun subscribeTopic() {
+        // [START subscribe_topics]
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
+            .addOnCompleteListener { task ->
+                var msg = getString(R.string.message_subscribed)
+                if (!task.isSuccessful) {
+                    msg = getString(R.string.message_subscribe_failed)
+                }
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+            }
+        // [END subscribe_topics]
+    }
+
 }
 
