@@ -16,10 +16,14 @@
 
 package com.example.android.eggtimernotifications.util
 
+import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import androidx.annotation.Nullable
 import androidx.core.app.NotificationCompat
 import com.example.android.eggtimernotifications.MainActivity
 import com.example.android.eggtimernotifications.R
@@ -48,8 +52,12 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         PendingIntent.FLAG_UPDATE_CURRENT
     )
 
-
     // TODO: Step 2.0 add style
+    val eggImageBitmap =
+        BitmapFactory.decodeResource(applicationContext.resources, R.drawable.cooked_egg)
+    val bigPictureStyle = NotificationCompat.BigPictureStyle()
+        .bigPicture(eggImageBitmap)
+        .bigLargeIcon(null)
 
     // TODO: Step 2.2 add snooze action
 
@@ -64,6 +72,8 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         .setSmallIcon(R.drawable.egg_icon)
         .setContentIntent(contentPendingIntent)
         .setAutoCancel(true)
+        .setStyle(bigPictureStyle)
+        .setLargeIcon(eggImageBitmap)
         .build()
 
     // TODO DONE: Step 1.3 set title, text and icon to builder
@@ -75,7 +85,7 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
     // TODO DONE: Step 1.13 set content intent
 
 
-    // TODO: Step 2.1 add style to builder
+    // TODO DONE: Step 2.1 add style to builder
 
     // TODO: Step 2.3 add snooze action
 
