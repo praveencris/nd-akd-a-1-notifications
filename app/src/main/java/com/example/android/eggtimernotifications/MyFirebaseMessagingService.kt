@@ -10,8 +10,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         private val TAG = MyFirebaseMessagingService::class.java.simpleName
     }
 
-    override fun onMessageReceived(p0: RemoteMessage?) {
-        super.onMessageReceived(p0)
+    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
+        Log.d(TAG, "From ${remoteMessage?.from}")
+
+        // DONE: Step 3.5 check messages for data
+        // Check if message contains a data payload.
+        remoteMessage?.data?.let {
+         Log.d(TAG,"Message data payload: "+remoteMessage.data)
+        }
     }
 
     // DONE: Step 3.2 log registration token
