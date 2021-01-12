@@ -16,17 +16,15 @@
 
 package com.example.android.eggtimernotifications.util
 
-import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import androidx.annotation.Nullable
 import androidx.core.app.NotificationCompat
 import com.example.android.eggtimernotifications.MainActivity
 import com.example.android.eggtimernotifications.R
+import com.example.android.eggtimernotifications.receiver.SnoozeReceiver
 
 // Notification ID.
 private val NOTIFICATION_ID = 0
@@ -52,7 +50,7 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         PendingIntent.FLAG_UPDATE_CURRENT
     )
 
-    // TODO: Step 2.0 add style
+    // TODO DONE: Step 2.0 add style
     val eggImageBitmap =
         BitmapFactory.decodeResource(applicationContext.resources, R.drawable.cooked_egg)
     val bigPictureStyle = NotificationCompat.BigPictureStyle()
@@ -60,6 +58,13 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         .bigLargeIcon(null)
 
     // TODO: Step 2.2 add snooze action
+    val snoozeIntent = Intent(applicationContext, SnoozeReceiver::class.java)
+    val snoozePendingIntent = PendingIntent.getBroadcast(
+        applicationContext,
+        REQUEST_CODE,
+        snoozeIntent,
+        FLAGS
+    )
 
     // TODO DONE: Step 1.2 get an instance of NotificationCompat.Builder
     // Build the notification
@@ -74,6 +79,11 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         .setAutoCancel(true)
         .setStyle(bigPictureStyle)
         .setLargeIcon(eggImageBitmap)
+        .addAction(
+            R.drawable.egg_icon,
+            applicationContext.getString(R.string.snooze),
+            snoozePendingIntent
+        )
         .build()
 
     // TODO DONE: Step 1.3 set title, text and icon to builder
@@ -87,7 +97,7 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
 
     // TODO DONE: Step 2.1 add style to builder
 
-    // TODO: Step 2.3 add snooze action
+    // TODO DONE: Step 2.3 add snooze action
 
     // TODO: Step 2.5 set priority
 
